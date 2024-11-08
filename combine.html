@@ -1,0 +1,88 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Routing Map Sample | Longdo Map</title>
+    <style type="text/css">
+        html {
+            height: 100%;
+        }
+        body {
+            margin: 0px;
+            height: 100%;
+        }
+        #map {
+            height: 100%;
+        }
+        #result {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            right: 0;
+            width: 1px;
+            height: 80%;
+            margin: auto;
+            border: 4px solid #dddddd;
+            background: #ffffff;
+            overflow: auto;
+            z-index: 2;
+        }
+        #inputForm {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: #ffffff;
+            padding: 10px;
+            z-index: 3;
+        }
+    </style>
+
+    <script type="text/javascript" src="https://api.longdo.com/map/?key=baa4c76de018d9147195ecedf64925c0"></script>
+    <script>
+        let map;
+
+        function init() {
+            map = new longdo.Map({
+                placeholder: document.getElementById('map')
+            });
+            map.Route.placeholder(document.getElementById('result'));
+        }
+
+        function addMarker() {
+            const lat = parseFloat(document.getElementById('latitude').value);
+            const lon = parseFloat(document.getElementById('longitude').value);
+
+            if (isNaN(lat) || isNaN(lon)) {
+                alert('Please enter valid latitude and longitude values.');
+                return;
+            }
+
+            // Clear previous markers if needed
+            map.Overlays.clear();
+
+            // Add a new marker to the specified location
+            const marker = new longdo.Marker(
+                { lon, lat },
+                {
+                    title: 'Location',
+                    detail: 'Latitude: ' + lat + ', Longitude: ' + lon
+                }
+            );
+
+            map.Overlays.add(marker);
+            map.location({ lon, lat }, true); // Center map to the marker
+        }
+    </script>
+</head>
+<body onload="init();">
+    <div id="map"></div>
+    <div id="result"></div>
+    <div id="inputForm">
+        <label for="latitude">Latitude:</label>
+        <input type="text" id="latitude" placeholder="Enter latitude"><br><br>
+        <label for="longitude">Longitude:</label>
+        <input type="text" id="longitude" placeholder="Enter longitude"><br><br>
+        <button onclick="addMarker()">Add Marker</button>
+    </div>
+</body>
+</html>
